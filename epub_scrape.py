@@ -4,15 +4,6 @@ import os
 import tqdm
 import requests
 
-
-# Load page and crawl it
-
-# Ask user which link he wants to scrape
-
-# Scrape the pages to a single html file for further processing.
-
-# Remove <any> tags
-
 def rem_tag(text, start, end):
     start_i = 0
     end_i = 0
@@ -64,10 +55,42 @@ def write_out(path, obj):
     with open(path, 'w') as outfile:
         outfile.write(obj)
 
+def parse_links(source):
+    links = []
+    pointer = 0
+    link, pointer = find_next_link(source, pointer)
+    while pointer != -1:
+        if not '#' in link:
+            if link != links:
+                links.append(link)
+        link, pointer = find_next_link(source, pointer+1)
+    return links
+
+def find_next_link(source, start):
+    first = '<a href="'
+    last = '"'
+    first_pos = source.find(first, start)
+    last_pos = source.find(last, first_pos+len(first))
+    target = source[first_pos + len(first):last_pos]
+    return target, first_pos
+
+
 def test_dwn():
     url = 'http://chimera.labs.oreilly.com/books/1234000001813/index.html'
     sauce = download(url)
     write_out('output.html', sauce)
+
+def test_links():
+    url = 'http://chimera.labs.oreilly.com/books/1234000001813/index.html'
+    sauce = download(url)
+    links = parse_links(sauce)
+    good_links = []
+    for i in range(len(links)):
+        if not '/' in links[i]:
+            if not 'http' in links[i]:
+                if not 'mailto' in links[i]:
+                    good_links += links[i]
+                    print(links[i])
 
 
 def test_cleaning():
