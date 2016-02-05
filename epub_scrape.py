@@ -4,6 +4,7 @@ import os
 import tqdm
 import requests
 
+# Functions
 def rem_tag(text, start, end):
     start_i = 0
     end_i = 0
@@ -74,6 +75,30 @@ def find_next_link(source, start):
     target = source[first_pos + len(first):last_pos]
     return target, first_pos
 
+def extract_usable_links(url):
+    sauce = download(url)
+    links = parse_links(sauce)
+    good_links = []
+    for i in range(len(links)):
+        if not '/' in links[i]:
+            if not 'http' in links[i]:
+                if not 'mailto' in links[i]:
+                    good_links += links[i]
+                    print(links[i])
+    return good_links
+
+
+# Tests
+def test_pages_dwn():
+    url = 'http://chimera.labs.oreilly.com/books/1234000001813/index.html'
+    url_stump = 'http://chimera.labs.oreilly.com/books/1234000001813/'
+    links = extract_usable_links(url)
+    with open('output_file.html', 'a') as out_file:
+        for link in tqdm.tqdm(links):
+            part = download(url_stump + link)
+            out_file.write(part)
+        print('Done.')
+
 
 def test_dwn():
     url = 'http://chimera.labs.oreilly.com/books/1234000001813/index.html'
@@ -91,7 +116,6 @@ def test_links():
                 if not 'mailto' in links[i]:
                     good_links += links[i]
                     print(links[i])
-
 
 def test_cleaning():
     inpath = 'test_page.html'
