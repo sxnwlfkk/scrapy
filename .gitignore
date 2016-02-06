@@ -62,3 +62,5 @@ target/
 .ipynb_checkpoints
 /test.html
 *.html
+/beej_j
+/beej_c/bgc.css

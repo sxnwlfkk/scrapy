@@ -12,7 +12,7 @@ def rem_tag(text, start, end):
     end_i = text.find(end, start_i)
     if start_i == -1:
         return text, start_i
-    text = text[:start_i] + text[end_i+1:]
+    text = text[:start_i] + text[end_i+len(end):]
     return text, start_i
 
 def rem_all_tag(text, start, end):
@@ -83,8 +83,7 @@ def extract_usable_links(url):
         if not '/' in links[i]:
             if not 'http' in links[i]:
                 if not 'mailto' in links[i]:
-                    good_links += links[i]
-                    print(links[i])
+                    good_links.append(links[i])
     return good_links
 
 
@@ -93,11 +92,33 @@ def test_pages_dwn():
     url = 'http://chimera.labs.oreilly.com/books/1234000001813/index.html'
     url_stump = 'http://chimera.labs.oreilly.com/books/1234000001813/'
     links = extract_usable_links(url)
+    file_a = ''
     with open('output_file.html', 'a') as out_file:
-        for link in tqdm.tqdm(links):
-            part = download(url_stump + link)
-            out_file.write(part)
+        for link in tqdm.tqdm(range(len(links))):
+            part = download(url_stump + links[link])
+            file_a += part
+            # out_file.write(part)
         print('Done.')
+    return file_a
+
+def test_parsing():
+    file_a = test_pages_dwn()
+    out_file = rem_all_tag(file_a, '<script', '/script>')
+    out_file = rem_all_tag(out_file, '<header', '/header>')
+    out_file = rem_all_tag(out_file, '<div class="extra-footer"', '/div>')
+    out_file = rem_all_tag(out_file, '<select', '/select>')
+    out_file = rem_all_tag(out_file, '<div id="menu"', '/div>')
+    out_file = rem_all_tag(out_file, '<select', '/select>')
+    out_file = rem_all_tag(out_file, '<footer', '/footer>')
+    out_file = rem_all_tag(out_file, '<ul id="menu-right"', '/ul>')
+    with open('book_source.html', 'a') as outfile:
+        outfile.write(out_file)
+    print('Done.')
+
+
+
+
+
 
 
 def test_dwn():
