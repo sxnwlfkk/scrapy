@@ -1,4 +1,5 @@
-# This program scrapes a tree structured webbook, and parses it to a single file
+# This is an experimental build. Functional but ugly.
+# Will be deleted, after the class build is ready.
 
 import os
 import tqdm
@@ -83,15 +84,17 @@ def extract_usable_links(url):
         if not '/' in links[i]:
             if not 'http' in links[i]:
                 if not 'mailto' in links[i]:
-                    good_links.append(links[i])
+                    if not 'javascript' in links[i]:
+                        good_links.append(links[i])
     return good_links
 
 
 # Tests
 def test_pages_dwn():
-    url = 'http://chimera.labs.oreilly.com/books/1234000001813/index.html'
-    url_stump = 'http://chimera.labs.oreilly.com/books/1234000001813/'
+    url = 'http://interactivepython.org/runestone/static/java4python/index.html'
+    url_stump = 'http://interactivepython.org/runestone/static/java4python/'
     links = extract_usable_links(url)
+    print(links)
     file_a = ''
     with open('output_file.html', 'a') as out_file:
         for link in tqdm.tqdm(range(len(links))):
@@ -111,7 +114,7 @@ def test_parsing():
     out_file = rem_all_tag(out_file, '<select', '/select>')
     out_file = rem_all_tag(out_file, '<footer', '/footer>')
     out_file = rem_all_tag(out_file, '<ul id="menu-right"', '/ul>')
-    with open('book_source.html', 'a') as outfile:
+    with open('python2java_source.html', 'a') as outfile:
         outfile.write(out_file)
     print('Done.')
 
