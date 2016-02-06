@@ -1,9 +1,35 @@
 # Executable of weebook
+#
+# Where applicable, the program provides useful default, which shows, how to
+# use the function.
 
 from webook_class import Webook
 
 def main():
-    book = Webook(args)
+    """Docstring placeholder."""
+    # Insert the index of the page you want to download
+    # url = 'http://something.com/or/other/index.html'
+    url = ''
+    book = Webook(url)
+
+    # Prints all the links on the index page. Uncomment it to determine wich
+    # ones you don't need, then comment it after, for brevity.
+    book.print_links()
+
+    # Write in the list below some unique marker of the links you don't want.
+    unwanted = ['mailto', 'javascript']
+    book.sort_links(unwanted)
+
+
+    # Write in the list below, which html tags you want the program to remove.
+    tags = ['script']
+    book.remove_tags(tags)
+
+    # Write in the export path. Be careful, if the file exists, it will
+    # overwrite it.
+    output = 'output.html'
+    book.export(output)
+
 
 if __name__ == '__main__':
     main()
