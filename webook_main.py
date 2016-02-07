@@ -25,6 +25,7 @@ def main():
     unwanted = ['mailto', 'javascript']
     book.sort_links(unwanted)
 
+    book.download_book()
 
     # Write in the list below, which html tags you want the program to remove.
     tags = ['script']
