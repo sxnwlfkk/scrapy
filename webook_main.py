@@ -13,7 +13,7 @@ def main():
     # You can use and existing html file. In this case leave <url> empty
     # and write the absolute path to file.
     # path = '/home/user/file.html'
-    url = 'http://chimera.labs.oreilly.com/books/1234000000754/index.html'
+    url = ''
     path = ''
     book = Webook(url, path)
 
