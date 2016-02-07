@@ -13,23 +13,26 @@ def main():
     # You can use and existing html file. In this case leave <url> empty
     # and write the absolute path to file.
     # path = '/home/user/file.html'
-    url = ''
+    url = 'http://chimera.labs.oreilly.com/books/1234000000754/index.html'
     path = ''
     book = Webook(url, path)
 
     # Prints all the links on the index page. Uncomment it to determine wich
     # ones you don't need, then comment it after, for brevity.
-    # book.print_links()
+    book.print_links()
 
     # Write in the list below some unique marker of the links you don't want.
-    unwanted = ['mailto', 'javascript']
+    unwanted = ['mailto', '/', 'http']
     book.sort_links(unwanted)
 
     book.download_book()
 
     # Write in the list below, which html tags you want the program to remove.
-    tags = ['script']
+    tags = ['script', 'header', 'footer', 'select']
     book.remove_tags(tags)
+    book.remove_tags_extra('<div class="extra-footer"', '/div>')
+    book.remove_tags_extra('<div id="menu"', '/div>')
+    book.remove_tags_extra('<ul id="menu-right"', '/ul>')
 
     # Write in the export path. Be careful, if the file exists, it will
     # overwrite it.

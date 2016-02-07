@@ -47,6 +47,11 @@ class Webook():
             while find != -1:
                 find = self._rem_tag(start, end)
 
+    def remove_tags_extra(self, start, end):
+        find = 0
+        while find != -1:
+            find = self._rem_tag(start, end)
+
     def _rem_tag(self, start, end):
          start_i = 0
          end_i = 0
@@ -62,8 +67,10 @@ class Webook():
             outfile.write(self.text)
 
     def download_book(self):
-        for link in self.links:
-            page = self._download_page(link)
+        url_stump = self.url[:self.url.find('index.html')]
+        for link in tqdm.tqdm(self.links):
+            url_usable = url_stump + link
+            page = self._download_page(url_usable)
             self.text += page
 
     def _import(self):
@@ -79,8 +86,8 @@ class Webook():
             if not '#' in link:
                 if link != links:
                     links.append(link)
-                    link, pointer = self._find_next_link(self.index, pointer+1)
-                    return links
+            link, pointer = self._find_next_link(self.index, pointer+1)
+        return links
 
     def _download_page(self, url):
         r = requests.get(url)
