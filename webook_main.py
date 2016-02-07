@@ -30,9 +30,13 @@ def main():
     # Write in the list below, which html tags you want the program to remove.
     tags = ['script', 'header', 'footer', 'select']
     book.remove_tags(tags)
-    book.remove_tags_extra('<div class="extra-footer"', '/div>')
-    book.remove_tags_extra('<div id="menu"', '/div>')
-    book.remove_tags_extra('<ul id="menu-right"', '/ul>')
+
+    # book.remove_tags_extra is for removing non-symmetric tags like the
+    # examples below. It's for fine tuning the html file before converting
+    # with calibre or the like.
+    # book.remove_tags_extra('<div class="extra-footer"', '/div>')
+    # book.remove_tags_extra('<div id="menu"', '/div>')
+    # book.remove_tags_extra('<ul id="menu-right"', '/ul>')
 
     # Write in the export path. Be careful, if the file exists, it will
     # overwrite it.
