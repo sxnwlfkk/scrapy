@@ -65,13 +65,15 @@ class Webook():
     def export(self, output):
         with open(output, 'w') as outfile:
             outfile.write(self.text)
+            print("Write done.")
 
     def download_book(self):
-        url_stump = self.url[:self.url.find('index.html')]
+        url_stump = self.url[:self.url.find('articles.html')]
         for link in tqdm.tqdm(self.links):
             url_usable = url_stump + link
             page = self._download_page(url_usable)
             self.text += page
+        print("Downloaded {0} files.".format(len(self.links)))
 
     def _import(self):
         with open(self.path, 'r') as page_source:
