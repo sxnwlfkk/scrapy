@@ -3,6 +3,8 @@
 import requests
 import tqdm
 import os
+from bs4 import BeautifulSoup
+
 
 class Webook():
 
@@ -33,7 +35,7 @@ class Webook():
         for link in self.links:
             counter = 0
             for excl in unwanted:
-                if not excl in link:
+                if excl not in link:
                     counter += 1
             if counter == len(unwanted):
                 good_links.append(link)
@@ -53,14 +55,14 @@ class Webook():
             find = self._rem_tag(start, end)
 
     def _rem_tag(self, start, end):
-         start_i = 0
-         end_i = 0
-         start_i = self.text.find(start)
-         end_i = self.text.find(end, start_i)
-         if start_i == -1:
-             return start_i
-         self.text = self.text[:start_i] + self.text[end_i+len(end):]
-         return start_i
+        start_i = 0
+        end_i = 0
+        start_i = self.text.find(start)
+        end_i = self.text.find(end, start_i)
+        if start_i == -1:
+            return start_i
+        self.text = self.text[:start_i] + self.text[end_i+len(end):]
+        return start_i
 
     def export(self, output):
         with open(output, 'w') as outfile:
@@ -85,7 +87,7 @@ class Webook():
         pointer = 0
         link, pointer = self._find_next_link(self.index, pointer)
         while pointer != -1:
-            if not '#' in link:
+            if '#' not in link:
                 if link != links:
                     links.append(link)
             link, pointer = self._find_next_link(self.index, pointer+1)
