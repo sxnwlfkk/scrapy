@@ -3,7 +3,6 @@
 import requests
 import tqdm
 import os
-from bs4 import BeautifulSoup
 
 
 class Webook():
